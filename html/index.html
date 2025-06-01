@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Simulador de Pinturas</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bienvenido/a a Integral Pinturas</h1>
+        <div id="mensaje-general" class="mensaje"></div>
+
+        <!--Tipo -->
+        <label for="select-tipo">Tipo de pintura:</label>
+        <select id="select-tipo">
+            <option value="">-- Elige un tipo --</option>
+            <option value="latex">Latex ($5500/L)</option>
+            <option value="sintetico">Sintético ($7500/L)</option>
+            <option value="barniz">Barniz ($8000/L)</option>
+            <option value="laca">Laca ($12000/L)</option>
+        </select>
+
+        <!--Cantidad de litros-->
+        <label for="input-litros">Litros:</label>
+        <input type="number" id="input-litros" min="1" placeholder="Cantidad de litros" />
+
+        <!--Checkbox person. -->
+        <div>
+            <label>
+                <input type="checkbox" id="chk-personalizado" />
+                Quiero personalizar color/terminación (+15%)
+            </label>
+        </div>
+
+        <!--Select color-->
+        <div id="contenedor-color" style="display: none;">
+            <label for="select-color">Elige un color:</label>
+            <select id="select-color">
+                <option value="">-- Elige un color --</option>
+                <option value="azul">Azul</option>
+                <option value="violeta">Violeta</option>
+                <option value="rojo">Rojo</option>
+                <option value="amarillo">Amarillo</option>
+                <option value="verde">Verde</option>
+            </select>
+        </div>
+
+        <!--Select acabado-->
+        <div id="contenedor-acabado" style="display: none;">
+            <label for="select-acabado">Elige un acabado:</label>
+            <select id="select-acabado">
+                <option value="">-- Elige un acabado --</option>
+                <option value="brillante">Brillante</option>
+                <option value="mate">Mate</option>
+                <option value="semimate">Semimate</option>
+            </select>
+        </div>
+
+        <!--cotiza -->
+        <button id="btn-cotizar" type="button">Calcular Cotización</button>
+
+        <div id="resultado" style="display: none;">
+            <h2>Resultado de la Cotización</h2>
+            <p id="texto-resultado"></p>
+        </div>
+
+    </div>
+
+
+    <script src="../js/codigo.js"></script>
+</body>
+
+</html>
