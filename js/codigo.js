@@ -1,110 +1,145 @@
-let historialCotizaciones = []
+let carrito = JSON.parse(localStorage.getItem("carrito")) || []
 
-//Funciones
-const selectTipo = document.getElementById("select-tipo")
-const inputLitros = document.getElementById("input-litros")
-const chkPersonalizado = document.getElementById("chk-personalizado")
-const contenedorColor = document.getElementById("contenedor-color")
-const selectColor = document.getElementById("select-color")
-const contenedorAcabado = document.getElementById("contenedor-acabado")
-const selectAcabado = document.getElementById("select-acabado")
-const btnCotizar = document.getElementById("btn-cotizar")
-const divResultado = document.getElementById("resultado")
-const textoResultado = document.getElementById("texto-resultado")
-const titulos = document.querySelector("h1")
-
-//obtener el precio por litro según el tipo
-function obtenerPrecioPorLitro(tipo) {
-  const mapaPrecios = {
-    latex: 5500,
-    sintetico: 7500,
-    barniz: 8000,
-    laca: 12000
-  }
-  return mapaPrecios[tipo] || 0
+function guardarCarrito() {
+  localStorage.setItem("carrito", JSON.stringify(carrito))
 }
 
-//Título Style
-titulos.style.letterSpacing = "1px"
-titulos.style.color = "darkslateblue"
-titulos.style.fontSize = "2.5rem"
-titulos.style.fontWeight = "bold"
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("https://68607ed58e7486408443590c.mockapi.io/api/v1/productos")
+    .then(res => res.json())
+    .then(data => renderizarTarjetas(data))
 
-chkPersonalizado.addEventListener("change", () => {
-  if (chkPersonalizado.checked) {
-    contenedorColor.style.display = "block"
-    contenedorAcabado.style.display = "block"
-  } else {
-    contenedorColor.style.display = "none"
-    contenedorAcabado.style.display = "none"
-    selectColor.value = ""
-    selectAcabado.value = ""
-  }
+  renderizarCarrito()
 })
 
-btnCotizar.addEventListener("click", () => {
-  if (!selectTipo.value) {
-    return
-  }
-  const litrosVal = parseInt(inputLitros.value)
-  if (isNaN(litrosVal) || litrosVal < 1) {
-    return
-  }
-  if (chkPersonalizado.checked) {
-    if (!selectColor.value && !selectAcabado.value) {
-      return
+function renderizarTarjetas(productos) {
+  const container = document.getElementById("productos-container")
+  container.innerHTML = ""
+
+  productos.forEach(prod => {
+    const tarjeta = document.createElement("div")
+    tarjeta.className = "tarjeta"
+
+    const opciones = prod.presentaciones.map(p =>
+      `<option value="${p.litros}">${p.litros}L - $${p.precio}</option>`
+    ).join("")
+
+    const traduccionColores = {
+      rojo: "red", azul: "blue", verde: "green", amarillo: "yellow", blanco: "white",
+      negro: "black", gris: "gray", marrón: "brown", naranja: "orange",
+      violeta: "purple", celeste: "skyblue",
+      transparente: "rgba(200,200,200,0.3)"
     }
-  }
 
-  //Calcular precio
-  const tipoElegido = selectTipo.value
-  const precioPorLitro = obtenerPrecioPorLitro(tipoElegido)
+    // Genera spans de colores o mensaje “Sin colores” si no hay array
+    
+    const colores = Array.isArray(prod.colores) ? prod.colores.map(c => {
+      const color = traduccionColores[c.toLowerCase()] || "gray"
+      return `<span class="color-tag" data-color="${c}" style="background-color:${color}" title="${c}"></span>`
+    }).join("") : "<span style='font-size: 0.85rem; color: gray;'>Sin colores</span>"
 
-  //total sin y con personalización
-  let total = precioPorLitro * litrosVal
-  const esPersonal = chkPersonalizado.checked
-  let colorElegido = ""
-  let acabadoElegido = ""
-  if (esPersonal) {
-    total = Math.round(total * 1.15)
-    colorElegido = selectColor.value
-    acabadoElegido = selectAcabado.value
-  }
+    tarjeta.innerHTML = `
+      ${prod.imagen ? `<img src="${prod.imagen}" alt="${prod.tipo}" class="imagen-producto" />` : ""}
+      <h3>${prod.tipo.toUpperCase()}</h3>
+      <p><strong>Marca:</strong> ${prod.marca}</p>
+      <p>${prod.descripcion}</p>
+      <div class="colores-container"><strong>Colores:</strong> ${colores}</div>
+      <label>Litros: <select class="select-litros">${opciones}</select></label>
+      <button>Agregar al carrito</button>
+    `
 
-  const fechaHora = new Date().toLocaleString()
+    const select = tarjeta.querySelector(".select-litros")
+    const button = tarjeta.querySelector("button")
+    let colorSeleccionado = null
 
-  //Mostrar resultado
-  const texto = "Tipo: " + tipoElegido +
-    " | Litros: " + litrosVal +
-    (esPersonal
-      ? " | Color: " + colorElegido + ", Acabado: " + acabadoElegido
-      : " | Sin personalizar"
-    ) +
-    " → Total: $" + total
-  textoResultado.innerText = texto
-  divResultado.style.display = "block"
+    tarjeta.querySelectorAll(".color-tag").forEach(tag => {
+      tag.addEventListener("click", () => {
+        tarjeta.querySelectorAll(".color-tag").forEach(t => t.classList.remove("seleccionado"))
+        tag.classList.add("seleccionado")
+        colorSeleccionado = tag.getAttribute("data-color")
+      })
+    })
 
-  //crear obj  c/datos de esta cotización
-  const objetoCot = {
-    fecha: fechaHora,
-    tipo: tipoElegido,
-    litros: litrosVal,
-    personalizado: esPersonal,
-    color: colorElegido,
-    acabado: acabadoElegido,
-    total: total
-  }
+    button.addEventListener("click", () => {
+      const litros = parseInt(select.value)
+      const presentacion = prod.presentaciones.find(p => p.litros === litros)
+      if (!presentacion) return
 
-  //guarda en localStorage
-  historialCotizaciones.push(objetoCot)
-  localStorage.setItem("historialCotizaciones", JSON.stringify(historialCotizaciones))
+      let precio = presentacion.precio
+      if (colorSeleccionado) precio *= 1.15
 
-  //limpiar
-  selectTipo.value = ""
-  inputLitros.value = ""
-  chkPersonalizado.checked = false
-  contenedorColor.style.display = "none"
-  contenedorAcabado.style.display = "none"
-  selectColor.value = ""
-  selectAcabado.value = ""
-})
+      carrito.push({
+        tipo: prod.tipo,
+        marca: prod.marca,
+        litros,
+        precio,
+        color: colorSeleccionado || "Sin selección"
+      })
+
+      guardarCarrito()
+      renderizarCarrito()
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Producto agregado al carrito',
+        text: `${prod.tipo} - ${litros}L - $${precio.toLocaleString()}`,
+        timer: 2000,
+        showConfirmButton: false
+      })
+    })
+
+    container.appendChild(tarjeta)
+  })
+}
+
+function renderizarCarrito() {
+  const div = document.getElementById("carrito") || document.createElement("div")
+  div.id = "carrito"
+  div.innerHTML = "<h3>🛒 Carrito de Compras</h3>"
+
+  const lista = document.createElement("ul")
+  carrito.forEach(item => {
+    const li = document.createElement("li")
+    li.textContent = `${item.tipo} (${item.litros}L) - $${item.precio.toFixed(2)} - Color: ${item.color}`
+    lista.appendChild(li)
+  })
+
+  div.appendChild(lista)
+
+  const total = carrito.reduce((acc, item) => acc + item.precio, 0)
+  const totalElem = document.createElement("p")
+  totalElem.className = "total-carrito"
+  totalElem.textContent = `Total: $${total.toLocaleString("es-AR", { minimumFractionDigits: 2 })}`
+  div.appendChild(totalElem)
+
+  const vaciarBtn = document.createElement("button")
+  vaciarBtn.textContent = "Vaciar Carrito"
+  vaciarBtn.className = "boton-carrito"
+  vaciarBtn.addEventListener("click", () => {
+    carrito = []
+    guardarCarrito()
+    renderizarCarrito()
+  })
+
+  const comprarBtn = document.createElement("button")
+  comprarBtn.textContent = "Finalizar Compra"
+  comprarBtn.className = "boton-carrito"
+  comprarBtn.addEventListener("click", () => {
+    if (carrito.length === 0) return alert("El carrito está vacío")
+    carrito = []
+    guardarCarrito()
+    renderizarCarrito()
+    Swal.fire("¡Compra realizada con éxito!", "Muchas gracias", "success")
+  })
+
+  div.appendChild(vaciarBtn)
+  div.appendChild(comprarBtn)
+
+  document.body.appendChild(div)
+}
+
+
+
+
+
+

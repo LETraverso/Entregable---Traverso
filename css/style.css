@@ -1,72 +1,145 @@
-
 body {
   font-family: Arial, sans-serif;
-  background-color: #e6dcdc;
-  margin: 20px;
-  color: #333;
+  padding: 2rem;
+  background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%)
 }
 
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: #c3b5e9;
-  padding: 20px;
+h2 {
+  text-align: center;
+  color: white;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  padding: 1rem;
+  border-radius: 12px;
+  display: block;
+  backdrop-filter: blur(5px)
+}
+
+.tarjetas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem
+}
+
+.tarjeta {
+  background: #ffffffdd;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.2s ease
+}
+
+.tarjeta:hover {
+  transform: scale(1.02)
+}
+
+.tarjeta h3 {
+  margin: 0;
+  color: #4e54c8
+}
+
+.tarjeta p {
+  margin: 0.5rem 0
+}
+
+.tarjeta select {
+  margin-top: 0.5rem;
+  padding: 0.4rem;
+  width: 100%;
   border-radius: 4px;
+  border: 1px solid #ccc
 }
 
-label {
-  display: block;
+.tarjeta button {
   margin-top: 1rem;
-  margin-bottom: 0.25rem;
-  font-weight: bold;
-}
-
-select,
-input[type="number"] {
-  width: 100%;
-  padding: 6px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-input[type="checkbox"] {
-  margin-right: 6px;
-}
-
-button#btn-cotizar {
-  display: block;
-  width: 100%;
-  margin-top: 1rem;
-  padding: 8px;
-  background-color: #449bf8;
-  color: #fff;
+  padding: 0.5rem 1rem;
+  background-color: #4e54c8;
+  color: white;
   border: none;
-  border-radius: 3px;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background 0.3s
+}
+
+.tarjeta button:hover {
+  background-color: #6c72e5
+}
+
+.imagen-producto {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  object-fit: cover
+}
+
+.colores-container {
+  margin: 0.5rem 0 1rem
+}
+
+.color-tag {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin: 3px;
+  border: 1px solid #333;
+  cursor: pointer
+}
+
+.color-tag.seleccionado {
+  outline: 3px solid #4e54c8
+}
+
+#carrito {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 2rem auto;
+  max-width: 700px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15)
+}
+
+.lista-carrito {
+  color: #333;
   font-size: 1rem;
+  font-weight: 700;
+  font-family: 'Arial Black', sans-serif;
+  letter-spacing: 0.3px
 }
 
-button#btn-cotizar:hover {
-  background-color: #0056b3;
+.lista-carrito li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ccc
 }
 
-#resultado {
-  display: none; 
-  margin-top: 1.5rem;
-  padding: 10px;
-  background-color: #e9ecef;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+.botones-carrito {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem
 }
 
-#historial {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 1rem;
+.btn-accion,
+.boton-carrito {
+  padding: 0.6rem 1.2rem;
+  background-color: #4e54c8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s
 }
 
-#historial li {
-  border-bottom: 1px solid #ddd;
-  padding: 6px 0;
-  font-size: 0.95rem;
+.btn-accion:hover,
+.boton-carrito:hover {
+  background-color: #6c72e5
 }
+
+

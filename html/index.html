@@ -1,76 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Simulador de Pinturas</title>
-    <link rel="stylesheet" href="../css/style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bienvenido a | Integral Pinturas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0
+    }
+
+    .welcome-section {
+      background: linear-gradient(135deg,
+              #4e54c8 0%,
+              #8f94fb 100%);
+      background-size: 200% 200%;
+      animation: gradientBG 30s ease infinite;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff
+    }
+
+    @keyframes gradientBG {
+      0% {
+        background-position: 0% 50%
+      }
+      50% {
+        background-position: 100% 50%
+      }
+      100% {
+        background-position: 0% 50%
+      }
+    }
+
+    .welcome-section h2 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem
+    }
+
+    .welcome-section h1 {
+      font-size: 6rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem
+    }
+
+    .btn-paint {
+      background-color: #ff8c00;
+      border: none;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      font-size: 1.25rem
+    }
+
+    .btn-paint:hover {
+      background-color: #e67e00
+    }
+  </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Bienvenido/a a Integral Pinturas</h1>
-        <div id="mensaje-general" class="mensaje"></div>
+  <section class="welcome-section">
+    <h2>Bienvenid@ a</h2>
+    <h1>INTEGRAL PINTURAS</h1>
+    <a href="productos.html" class="btn btn-paint">
+      Ver Productos
+    </a>
+  </section>
 
-        <!--Tipo -->
-        <label for="select-tipo">Tipo de pintura:</label>
-        <select id="select-tipo">
-            <option value="">-- Elige un tipo --</option>
-            <option value="latex">Latex ($5500/L)</option>
-            <option value="sintetico">Sintético ($7500/L)</option>
-            <option value="barniz">Barniz ($8000/L)</option>
-            <option value="laca">Laca ($12000/L)</option>
-        </select>
-
-        <!--Cantidad de litros-->
-        <label for="input-litros">Litros:</label>
-        <input type="number" id="input-litros" min="1" placeholder="Cantidad de litros" />
-
-        <!--Checkbox person. -->
-        <div>
-            <label>
-                <input type="checkbox" id="chk-personalizado" />
-                Quiero personalizar color/terminación (+15%)
-            </label>
-        </div>
-
-        <!--Select color-->
-        <div id="contenedor-color" style="display: none;">
-            <label for="select-color">Elige un color:</label>
-            <select id="select-color">
-                <option value="">-- Elige un color --</option>
-                <option value="azul">Azul</option>
-                <option value="violeta">Violeta</option>
-                <option value="rojo">Rojo</option>
-                <option value="amarillo">Amarillo</option>
-                <option value="verde">Verde</option>
-            </select>
-        </div>
-
-        <!--Select acabado-->
-        <div id="contenedor-acabado" style="display: none;">
-            <label for="select-acabado">Elige un acabado:</label>
-            <select id="select-acabado">
-                <option value="">-- Elige un acabado --</option>
-                <option value="brillante">Brillante</option>
-                <option value="mate">Mate</option>
-                <option value="semimate">Semimate</option>
-            </select>
-        </div>
-
-        <!--cotiza -->
-        <button id="btn-cotizar" type="button">Calcular Cotización</button>
-
-        <div id="resultado" style="display: none;">
-            <h2>Resultado de la Cotización</h2>
-            <p id="texto-resultado"></p>
-        </div>
-
-    </div>
-
-
-    <script src="../js/codigo.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
